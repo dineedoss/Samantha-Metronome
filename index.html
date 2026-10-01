@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#111827" />
+  <title>Samantha Metronome</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Practice smarter</p>
+        <h1>Samantha Metronome</h1>
+        <p class="subtitle">Program tempo and time-signature changes by measure, then press play.</p>
+      </div>
+    </header>
+
+    <section class="now-card">
+      <div class="pulse-wrap">
+        <div id="pulse" class="pulse">
+          <span id="beatDisplay">1</span>
+        </div>
+      </div>
+
+      <div class="now-grid">
+        <div>
+          <span class="label">Tempo</span>
+          <strong><span id="bpmDisplay">80</span> BPM</strong>
+        </div>
+        <div>
+          <span class="label">Time signature</span>
+          <strong id="signatureDisplay">4/4</strong>
+        </div>
+        <div>
+          <span class="label">Measure</span>
+          <strong><span id="measureDisplay">1</span> / <span id="totalMeasureDisplay">16</span></strong>
+        </div>
+        <div>
+          <span class="label">Section</span>
+          <strong><span id="sectionDisplay">1</span> / <span id="totalSectionDisplay">3</span></strong>
+        </div>
+      </div>
+
+      <div class="progress"><div id="progressBar"></div></div>
+      <p id="nextChange" class="next-change">Next: measure 5 → 100 BPM, 4/4</p>
+
+      <div class="transport">
+        <button id="prevBtn" class="secondary">◀ Section</button>
+        <button id="startBtn" class="primary">Start</button>
+        <button id="resetBtn" class="secondary">Reset</button>
+        <button id="nextBtn" class="secondary">Section ▶</button>
+      </div>
+    </section>
+
+    <section class="settings-card">
+      <div class="settings-row">
+        <label>
+          <span>Volume</span>
+          <input id="volume" type="range" min="0" max="1" step="0.01" value="0.7" />
+        </label>
+        <label class="toggle">
+          <input id="countIn" type="checkbox" checked />
+          <span>1-measure count-in</span>
+        </label>
+        <label class="toggle">
+          <input id="loopProgram" type="checkbox" />
+          <span>Loop program</span>
+        </label>
+      </div>
+    </section>
+
+    <section class="program-card">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Practice program</p>
+          <h2>Tempo map</h2>
+        </div>
+        <button id="addSectionBtn" class="primary small">+ Add section</button>
+      </div>
+
+      <div id="sections" class="sections"></div>
+      <p class="hint">Each section starts immediately after the previous one. Changes happen exactly on the first beat of the new measure.</p>
+    </section>
+  </main>
+
+  <template id="sectionTemplate">
+    <article class="section-row">
+      <div class="range-badge"></div>
+      <label>
+        <span>Measures</span>
+        <input class="measures" type="number" min="1" max="999" />
+      </label>
+      <label>
+        <span>BPM</span>
+        <input class="bpm" type="number" min="20" max="320" />
+      </label>
+      <label>
+        <span>Time</span>
+        <select class="signature">
+          <option>2/4</option><option>3/4</option><option>4/4</option><option>5/4</option>
+          <option>6/8</option><option>7/8</option><option>9/8</option><option>12/8</option>
+        </select>
+      </label>
+      <div class="row-actions">
+        <button class="move-up" title="Move up">↑</button>
+        <button class="move-down" title="Move down">↓</button>
+        <button class="delete" title="Delete">✕</button>
+      </div>
+    </article>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>

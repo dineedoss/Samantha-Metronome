@@ -44,7 +44,23 @@ node.querySelector(".delete").onclick=()=>{if(sections.length>1){sections.splice
 els.sections.appendChild(node)});refreshDisplay()}
 function programChanged(){sanitize();stopPlayback(false);renderSections()}
 function ensureAudio(){if(!audioCtx){audioCtx=new (window.AudioContext||window.webkitAudioContext)();masterGain=audioCtx.createGain();masterGain.connect(audioCtx.destination)}masterGain.gain.value=+els.volume.value;return audioCtx.resume()}
-function clickAt(time,accent=false){const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();osc.frequency.setValueAtTime(accent?1400:900,time);gain.gain.setValueAtTime(accent?.75:.48,time);gain.gain.exponentialRampToValueAtTime(.0001,time+.05);osc.connect(gain);gain.connect(masterGain);osc.start(time);osc.stop(time+.055)}
+function clickAt(time,accent=false){
+  const osc=audioCtx.createOscillator(), overtone=audioCtx.createOscillator();
+  const gain=audioCtx.createGain(), overtoneGain=audioCtx.createGain();
+  const compressor=audioCtx.createDynamicsCompressor();
+  osc.type="square"; overtone.type="triangle";
+  osc.frequency.setValueAtTime(accent?1050:780,time);
+  overtone.frequency.setValueAtTime(accent?2100:1560,time);
+  gain.gain.setValueAtTime(accent?1.0:.82,time);
+  gain.gain.exponentialRampToValueAtTime(.0001,time+.095);
+  overtoneGain.gain.setValueAtTime(accent?.38:.26,time);
+  overtoneGain.gain.exponentialRampToValueAtTime(.0001,time+.065);
+  compressor.threshold.value=-18; compressor.knee.value=8; compressor.ratio.value=4;
+  compressor.attack.value=.002; compressor.release.value=.08;
+  osc.connect(gain); overtone.connect(overtoneGain);
+  gain.connect(compressor); overtoneGain.connect(compressor); compressor.connect(masterGain);
+  osc.start(time); overtone.start(time); osc.stop(time+.1); overtone.stop(time+.07);
+}
 function flash(accent,beat){const delay=Math.max(0,(nextNoteTime-audioCtx.currentTime)*1000);setTimeout(()=>{els.beat.textContent=beat;els.pulse.classList.remove("hit","accent");void els.pulse.offsetWidth;els.pulse.classList.add("hit");if(accent)els.pulse.classList.add("accent");setTimeout(()=>els.pulse.classList.remove("hit","accent"),90);refreshDisplay()},delay)}
 function scheduleNote(){const section=sections[currentSection],{beats}=parseSig(section.signature);const accent=beatInMeasure===0;clickAt(nextNoteTime,accent);flash(accent,beatInMeasure+1);nextNoteTime+=beatSeconds(section);beatInMeasure++;
 if(beatInMeasure>=beats){beatInMeasure=0;measureInSection++;globalMeasure++;if(measureInSection>=section.measures){currentSection++;measureInSection=0;if(currentSection>=sections.length){if(els.loop.checked){currentSection=0;globalMeasure=0}else{setTimeout(()=>stopPlayback(true),Math.max(0,(nextNoteTime-audioCtx.currentTime)*1000));return false}}}}return true}

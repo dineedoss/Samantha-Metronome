@@ -1,12 +1,28 @@
 const $=s=>document.querySelector(s);
 const els={sections:$("#sections"),template:$("#sectionTemplate"),start:$("#startBtn"),reset:$("#resetBtn"),prev:$("#prevBtn"),next:$("#nextBtn"),add:$("#addSectionBtn"),volume:$("#volume"),countIn:$("#countIn"),loop:$("#loopProgram"),pulse:$("#pulse"),beat:$("#beatDisplay"),bpm:$("#bpmDisplay"),sig:$("#signatureDisplay"),measure:$("#measureDisplay"),totalMeasure:$("#totalMeasureDisplay"),section:$("#sectionDisplay"),totalSection:$("#totalSectionDisplay"),progress:$("#progressBar"),nextChange:$("#nextChange")};
 
-const STORAGE_KEY="samantha-metronome-program-v2";
+const STORAGE_KEY="samantha-metronome-program-v3";
 const DEFAULT_PROGRAM=[
-  {measures:4,bpm:144,signature:"4/4"},
-  {measures:4,bpm:144,signature:"4/4"},
-  {measures:8,bpm:144,signature:"4/4"},
-  ...Array.from({length:17},()=>({measures:4,bpm:144,signature:"4/4"}))
+  {measures:4,bpm:60,signature:"3/4"},   // 1–4
+  {measures:4,bpm:60,signature:"3/4"},   // 5–8
+  {measures:8,bpm:60,signature:"3/4"},   // 9–16
+  {measures:4,bpm:144,signature:"4/4"},  // 17–20
+  {measures:4,bpm:144,signature:"4/4"},  // 21–24
+  {measures:4,bpm:144,signature:"4/4"},  // 25–28
+  {measures:4,bpm:144,signature:"4/4"},  // 29–32
+  {measures:4,bpm:144,signature:"4/4"},  // 33–36
+  {measures:4,bpm:144,signature:"4/4"},  // 37–40
+  {measures:4,bpm:144,signature:"4/4"},  // 41–44
+  {measures:4,bpm:144,signature:"4/4"},  // 45–48
+  {measures:4,bpm:144,signature:"4/4"},  // 49–52
+  {measures:4,bpm:144,signature:"4/4"},  // 53–56
+  {measures:4,bpm:144,signature:"4/4"},  // 57–60
+  {measures:4,bpm:144,signature:"4/4"},  // 61–64
+  {measures:4,bpm:60,signature:"3/4"},   // 65–68
+  {measures:4,bpm:60,signature:"3/4"},   // 69–72
+  {measures:4,bpm:144,signature:"4/4"},  // 73–76
+  {measures:4,bpm:144,signature:"4/4"},  // 77–80
+  {measures:4,bpm:144,signature:"4/4"}   // 81–84
 ];
 let sections=loadProgram();
 let audioCtx=null, masterGain=null, timer=null, playing=false, paused=false, nextNoteTime=0, currentSection=0, measureInSection=0, globalMeasure=0, beatInMeasure=0, countInRemaining=0;

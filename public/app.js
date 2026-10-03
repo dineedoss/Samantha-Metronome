@@ -1,8 +1,13 @@
 const $=s=>document.querySelector(s);
 const els={sections:$("#sections"),template:$("#sectionTemplate"),start:$("#startBtn"),reset:$("#resetBtn"),prev:$("#prevBtn"),next:$("#nextBtn"),add:$("#addSectionBtn"),volume:$("#volume"),countIn:$("#countIn"),loop:$("#loopProgram"),pulse:$("#pulse"),beat:$("#beatDisplay"),bpm:$("#bpmDisplay"),sig:$("#signatureDisplay"),measure:$("#measureDisplay"),totalMeasure:$("#totalMeasureDisplay"),section:$("#sectionDisplay"),totalSection:$("#totalSectionDisplay"),progress:$("#progressBar"),nextChange:$("#nextChange")};
 
-const STORAGE_KEY="samantha-metronome-program-v1";
-const DEFAULT_PROGRAM=[{measures:4,bpm:80,signature:"4/4"},{measures:4,bpm:100,signature:"4/4"},{measures:8,bpm:120,signature:"3/4"}];
+const STORAGE_KEY="samantha-metronome-program-v2";
+const DEFAULT_PROGRAM=[
+  {measures:4,bpm:144,signature:"4/4"},
+  {measures:4,bpm:144,signature:"4/4"},
+  {measures:8,bpm:144,signature:"4/4"},
+  ...Array.from({length:17},()=>({measures:4,bpm:144,signature:"4/4"}))
+];
 let sections=loadProgram();
 let audioCtx=null, masterGain=null, timer=null, playing=false, paused=false, nextNoteTime=0, currentSection=0, measureInSection=0, globalMeasure=0, beatInMeasure=0, countInRemaining=0;
 const LOOKAHEAD_MS=25, SCHEDULE_AHEAD=0.1;
